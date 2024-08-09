@@ -11,8 +11,11 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EditStudentComponent implements OnInit {
   student: any = {}
-
+  uploadFile:any = null
+  image: any = "../assets/addImage.png"
+  
   editForm = this.fb.group({
+    studImage: [''],
     studId: ['',[Validators.pattern('[A-z0-9]*'),Validators.required]],
     studName: ['',[Validators.pattern('[a-zA-Z0-9 ]*'),Validators.required]],
     studCourse: ['',[Validators.required]],
@@ -27,6 +30,19 @@ export class EditStudentComponent implements OnInit {
       const { id } = result
       this.getAStudent(id)
     })
+  }
+
+  getFile(event: any) {
+    this.uploadFile = event.target.files[0]
+    if (this.uploadFile?.type == "image/png" || this.uploadFile?.type == "image/jpg" || this.uploadFile?.type == "image/jpeg") {
+      let fr = new FileReader()
+      fr.readAsDataURL(this.uploadFile)
+      fr.onload = (event: any) => {
+        this.image = event.target.result
+      }
+    } else {
+      this.image = "../assets/addImage.png"
+    }
   }
 
   getAStudent(id: any) {
@@ -47,12 +63,16 @@ export class EditStudentComponent implements OnInit {
   updateStudent(){
     if (sessionStorage.getItem("token")) {
       if (this.editForm.valid) {
-        const studId = this.editForm.value.studId
-        const studName = this.editForm.value.studName
-        const studCourse = this.editForm.value.studCourse
-        const studStatus = this.editForm.value.studStatus
-        const user = {studId,studName,studCourse,studStatus}
-        this.api.updateAStudentAPI(user).subscribe({
+
+        const reqbody = new FormData()
+        reqbody.append("studImage", this.uploadFile)
+        reqbody.append("studId", this.editForm.value.studId as string)
+        reqbody.append("studName", this.editForm.value.studName  as string)
+        reqbody.append("studCourse", this.editForm.value.studCourse  as string)
+        reqbody.append("studStatus", this.editForm.value.studStatus  as string)
+        console.log(reqbody);
+
+        this.api.updateAStudentAPI(reqbody).subscribe({
           next: (result: any) => {
             console.log(result);
             this.toastr.success(`Updated Successfully`)
@@ -71,5 +91,8 @@ export class EditStudentComponent implements OnInit {
     }
   }
 
+  cancel(){
+    this.router.navigateByUrl("home")
+  }
 
 }

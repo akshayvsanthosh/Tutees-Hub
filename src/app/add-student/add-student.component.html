@@ -1,6 +1,13 @@
 <form (ngSubmit)="addStudent()" #addStudentForm="ngForm" class="w-50 p-5 pt-1 mt-5 ms-5 border rounded">
     <h3 class="pt-3 mb-4 fw-bold">NEW STUDENT</h3>
     <div class="mb-4">
+        <label>
+            <input (change)="getFile($event)" type="file" style="display: none;">
+            <img width="75px" [src]="image" alt="Image">
+        </label>
+    </div>
+
+    <div class="mb-4">
         <input #studentId="ngModel" name="studId" [(ngModel)]="studId" placeholder="Student ID" type="text" class="form-control" id="exampleInputstudID" aria-describedby="emailHelp" style="padding: 10px; font-size: large; font-weight: 500;" pattern="[A-Z0-9]*" required>
         <div *ngIf="studentId.invalid && studentId.touched" class="text-danger fw-semibold">*Invalid Id</div>
     </div>
@@ -11,8 +18,8 @@
     </div>
     <div class="form-floating mb-4">
         <select #studentCourse="ngModel" name="studCourse" [(ngModel)]="studCourse" id="course" class="form-control" required>
-            <option value="10">BCA</option>
-            <option value="20">BBA</option>
+            <option value="10">BBA</option>
+            <option value="20">BCA</option>
             <option value="30">BCom</option>
         </select>
         <label for="course" >Course</label>
@@ -26,6 +33,6 @@
         <label for="studStatus">Status</label>
         <div *ngIf="studentStatus.invalid && studentStatus.touched" class="text-danger fw-semibold">*Invalid status</div>
     </div>
-    <button type="submit" class="btn btn-warning me-5 ">Cancel</button>
+    <button (click)="cancel()" class="btn btn-warning me-5 ">Cancel</button>
     <button [disabled]="addStudentForm.invalid" type="submit" class="btn btn-primary">Submit</button>
 </form>

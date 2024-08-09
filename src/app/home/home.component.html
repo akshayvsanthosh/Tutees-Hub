@@ -1,18 +1,20 @@
 <div class="p-2 text-center overflow-x-hidden">
     <div class="row">
         <div class="col-12 d-flex justify-content-between p-4">
-           <div> Search : <input [(ngModel)]="searchKey" type="text" placeholder="search by name"></div>
-           <div class="dropdown">
-            <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Sort
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" (click)="sortbyName()">sort by name</a></li>
-              <li><a class="dropdown-item" (click)="sortbyId()">sort by Id</a></li>
-              <li><a class="dropdown-item" (click)="sortbyCourse()">sort by course</a></li>
-            </ul>
-          </div>
-           <div><button [routerLink]="['/addStudent']" routerLinkActive="router-link-active"  class="btn btn-info"><i class="fa-solid fa-user-plus"></i> Student</button></div>
+            <div> Search : <input [(ngModel)]="searchKey" type="text" placeholder="search by name"></div>
+            <div class="dropdown">
+                <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Sort
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="sortbyName()">sort by name</a></li>
+                    <li><a class="dropdown-item" (click)="sortbyId()">sort by Id</a></li>
+                    <li><a class="dropdown-item" (click)="sortbyCourse()">sort by course</a></li>
+                </ul>
+            </div>
+            <div><button [routerLink]="['/addStudent']" routerLinkActive="router-link-active" class="btn btn-info"><i
+                        class="fa-solid fa-user-plus"></i> Student</button></div>
         </div>
         <div class="col-12">
             <table class="table table-striped">
@@ -22,22 +24,78 @@
                         <th scope="col">Name</th>
                         <th scope="col">Course</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">...</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let student of allStudents | search:searchKey">
-                        <th scope="row">{{student.studId}}</th>
-                        <td>{{student.studName}}</td>
-                        <td>{{student.studCourse=="10"?'BCA':student.studCourse=="20"?'BBA':'BCom'}}</td>
-                        <td><span [ngClass]="student.studStatus=='0'?'btn btn-success':'btn btn-warning'">{{student.studStatus=="0"?'Active':'Inactive'}}</span></td>
-
+                    <tr *ngFor="let student of allStudents | search:searchKey" (click)="selectStudent(student)">
+                        <td data-bs-toggle="modal" data-bs-target="#exampleModal">{{student.studId}}</td>
+                        <td data-bs-toggle="modal" data-bs-target="#exampleModal">{{student.studName}}</td>
+                        <td data-bs-toggle="modal" data-bs-target="#exampleModal">{{student.studCourse=="10"?'BBA':student.studCourse=="20"?'BCA':'BCom'}}</td>
+                        <td data-bs-toggle="modal" data-bs-target="#exampleModal"><span
+                                [ngClass]="student.studStatus=='0'?'btn btn-success':'btn btn-warning'">{{student.studStatus=="0"?'Active':'Inactive'}}</span>
+                        </td>
+                        <td data-bs-toggle="modal" data-bs-target="#exampleModal"><img width="55px" [src]="SERVER_URL + '/uploads/' + student.studImage" alt=""></td>
                         <td>
-                            <button routerLink="/{{student.studId}}/editStudent" class="btn btn-primary"><i class="fa-solid fa-edit"></i></button>
-                            <button (click)="deleteStudent(student.studId)" class="btn text-danger"><i class="fa-solid fa-trash"></i></button>
+                            <button routerLink="/{{student.studId}}/editStudent" class="btn btn-primary"><i
+                                    class="fa-solid fa-edit"></i></button>
+                            <button (click)="deleteStudent(student.studId)" class="btn text-danger"><i
+                                    class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{selectedStudent.studName}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="mb-4 d-flex justify-content-center">
+                        <label>
+                            <img width="75px" src="" alt="Image">
+                        </label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="exampleInputstudID">Student ID</label>
+                        <input [(ngModel)]="selectedStudent.studId" name="studId" placeholder="Student ID"
+                            type="text" class="form-control" id="exampleInputstudID" aria-describedby="emailHelp"
+                            style="padding: 10px; font-size: large; font-weight: 500;">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="exampleInputstudName">Student Name</label>
+                        <input [(ngModel)]="selectedStudent.studName" name="studName" placeholder="Student Name"
+                            type="text" class="form-control" id="exampleInputstudName" aria-describedby="emailHelp"
+                            style="padding: 10px; font-size: large; font-weight: 500;">
+                       </div>
+                       <div class="mb-4">
+                        <label for="exampleInputstudCourse">Student Course</label>
+                        <input [(ngModel)]="selectedStudent.studCourse" name="studName" placeholder="Student Course"
+                            type="text" class="form-control" id="exampleInputstudCourse" aria-describedby="emailHelp"
+                            style="padding: 10px; font-size: large; font-weight: 500;">
+                       </div>
+                       <div class="mb-4">
+                        <label for="exampleInputstudStatus">Student Status</label>
+                        <input [(ngModel)]="selectedStudent.studStatus" name="studName" placeholder="Student Status"
+                            type="text" class="form-control" id="exampleInputstudStatus" aria-describedby="emailHelp"
+                            style="padding: 10px; font-size: large; font-weight: 500;">
+                       </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>

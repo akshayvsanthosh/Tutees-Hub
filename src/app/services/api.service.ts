@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class ApiService {
 
-  server_url ="http://localhost:3000"
+  server_url ="https://tutees-hub-server.onrender.com"
 
   constructor(private http:HttpClient) { }
 
@@ -23,8 +23,8 @@ export class ApiService {
     return {headers}
   }
 
-  addStudentAPI(student:any){
-    return this.http.post(`${this.server_url}/addStudent`,student,this.appendToken())
+  addStudentAPI(reqbody:any){
+    return this.http.post(`${this.server_url}/addStudent`,reqbody,this.appendToken())
   }
 
   getStudentsAPI(){
@@ -35,8 +35,8 @@ export class ApiService {
     return this.http.get(`${this.server_url}/${id}/student`,this.appendToken())
   }
 
-  updateAStudentAPI(student:any){
-    return this.http.put(`${this.server_url}/${student.studId}/updateStudent`,student,this.appendToken())
+  updateAStudentAPI(reqbody:any){
+    return this.http.put(`${this.server_url}/${reqbody.get("studId")}/updateStudent`,reqbody,this.appendToken())
   }
 
   deleteAStudentAPI(id:any){

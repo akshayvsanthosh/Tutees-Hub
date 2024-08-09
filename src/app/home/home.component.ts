@@ -10,7 +10,12 @@ export class HomeComponent implements OnInit{
 
   allStudents:any=[]
   searchKey:string=""
-  constructor(private api: ApiService) { }
+  SERVER_URL:any=""
+  selectedStudent:any=""
+  
+  constructor(private api: ApiService) { 
+    this.SERVER_URL = api.server_url
+  }
 
   ngOnInit(): void {
     this.getAllStudents()
@@ -19,6 +24,8 @@ export class HomeComponent implements OnInit{
   getAllStudents(){
     this.api.getStudentsAPI().subscribe((result:any)=>{
       this.allStudents=result 
+      console.log(this.allStudents);
+      
     })  
   }
 
@@ -41,6 +48,10 @@ export class HomeComponent implements OnInit{
   sortbyCourse(){
     this.allStudents.sort((stud1:any,stud2:any)=>stud1.studCourse-stud2.studCourse)
     console.log(this.allStudents);
+  }
+
+  selectStudent(student:any){
+    this.selectedStudent=student
   }
 
 }
