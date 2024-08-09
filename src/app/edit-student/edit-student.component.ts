@@ -12,7 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 export class EditStudentComponent implements OnInit {
   student: any = {}
   uploadFile:any = null
+  existingFile:any=""
   image: any = "../assets/addImage.png"
+  SERVER_URL:any=""
   
   editForm = this.fb.group({
     studImage: [''],
@@ -23,7 +25,9 @@ export class EditStudentComponent implements OnInit {
   })
   
 
-  constructor(private route: ActivatedRoute, private api: ApiService, private router: Router, private fb: FormBuilder,private toastr:ToastrService) { }
+  constructor(private route: ActivatedRoute, private api: ApiService, private router: Router, private fb: FormBuilder,private toastr:ToastrService) { 
+    this.SERVER_URL = api.server_url
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((result: any) => {
@@ -42,19 +46,22 @@ export class EditStudentComponent implements OnInit {
       }
     } else {
       this.image = "../assets/addImage.png"
+      this.uploadFile = null;
     }
   }
 
   getAStudent(id: any) {
     this.api.getAStudentAPI(id).subscribe((result: any) => {
       this.student = result
+      this.existingFile=this.student.studImage
       this.editForm.patchValue({
         studId: this.student.studId,
         studName: this.student.studName,
         studCourse: this.student.studCourse,
         studStatus: this.student.studStatus
       })
-      console.log(this.student); 
+      this.image=`${this.SERVER_URL}/uploads/${this.existingFile}`
+      // console.log(this.student);
       console.log(this.editForm.value);
       
     })
@@ -65,7 +72,7 @@ export class EditStudentComponent implements OnInit {
       if (this.editForm.valid) {
 
         const reqbody = new FormData()
-        reqbody.append("studImage", this.uploadFile)
+        this.uploadFile ? reqbody.append("studImage", this.uploadFile) : reqbody.append("studImage", this.existingFile)
         reqbody.append("studId", this.editForm.value.studId as string)
         reqbody.append("studName", this.editForm.value.studName  as string)
         reqbody.append("studCourse", this.editForm.value.studCourse  as string)
