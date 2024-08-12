@@ -41,8 +41,11 @@ export class HomeComponent implements OnInit{
   }
 
   sortbyId(){
-    this.allStudents.sort((stud1:any,stud2:any)=>stud1.studId.localeCompare(stud2.studId))
-    console.log(this.allStudents);
+    this.allStudents.sort((stud1: any, stud2: any) => {
+      const num1 = parseInt(stud1.studId.replace(/\D/g, ''), 10);
+      const num2 = parseInt(stud2.studId.replace(/\D/g, ''), 10);
+      return num1 - num2;
+    });
   }
 
   sortbyCourse(){
