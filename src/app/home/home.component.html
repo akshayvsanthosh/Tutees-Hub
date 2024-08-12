@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="p-2 text-center overflow-x-hidden">
     <div class="row">
         <div class="col-12 d-flex justify-content-between p-4">
@@ -62,32 +63,32 @@
                 
                     <div class="mb-4 d-flex justify-content-center">
                         <label>
-                            <img width="75px" src="" alt="Image">
+                            <img width="75px" [src]="SERVER_URL + '/uploads/' + selectedStudent.studImage"  alt="Image">
                         </label>
                     </div>
 
                     <div class="mb-4">
                         <label for="exampleInputstudID">Student ID</label>
-                        <input [(ngModel)]="selectedStudent.studId" name="studId" placeholder="Student ID"
+                        <input readonly [(ngModel)]="selectedStudent.studId" name="studId" placeholder="Student ID"
                             type="text" class="form-control" id="exampleInputstudID" aria-describedby="emailHelp"
                             style="padding: 10px; font-size: large; font-weight: 500;">
                     </div>
 
                     <div class="mb-4">
                         <label for="exampleInputstudName">Student Name</label>
-                        <input [(ngModel)]="selectedStudent.studName" name="studName" placeholder="Student Name"
+                        <input readonly [(ngModel)]="selectedStudent.studName" name="studName" placeholder="Student Name"
                             type="text" class="form-control" id="exampleInputstudName" aria-describedby="emailHelp"
                             style="padding: 10px; font-size: large; font-weight: 500;">
                        </div>
                        <div class="mb-4">
                         <label for="exampleInputstudCourse">Student Course</label>
-                        <input [(ngModel)]="selectedStudent.studCourse" name="studName" placeholder="Student Course"
+                        <input readonly [(ngModel)]="selectedStudent.studCourse" name="studName" placeholder="Student Course"
                             type="text" class="form-control" id="exampleInputstudCourse" aria-describedby="emailHelp"
                             style="padding: 10px; font-size: large; font-weight: 500;">
                        </div>
                        <div class="mb-4">
                         <label for="exampleInputstudStatus">Student Status</label>
-                        <input [(ngModel)]="selectedStudent.studStatus" name="studName" placeholder="Student Status"
+                        <input readonly [(ngModel)]="selectedStudent.studStatus" name="studName" placeholder="Student Status"
                             type="text" class="form-control" id="exampleInputstudStatus" aria-describedby="emailHelp"
                             style="padding: 10px; font-size: large; font-weight: 500;">
                        </div>
